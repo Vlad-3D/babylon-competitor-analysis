@@ -1,0 +1,5 @@
+aave_symbol,aave_name,aave_supply_usd,aave_borrow_usd,aave_utilization,aave_ltv_onchain,aave_liq_threshold,aave_price_usd
+tBTC,tBTC v2,129222121.62,3958017.37,3.04,73.0,78.0,72179.44
+WBTC,Wrapped BTC,2995477998.89,72427054.41,2.23,73.0,78.0,72179.44
+LBTC,Lombard Staked Bitcoin,163291959.83,1227.38,-0.0,70.0,75.0,72179.44
+cbBTC,Coinbase Wrapped BTC,1897219486.18,27752846.56,1.45,73.0,78.0,72179.44

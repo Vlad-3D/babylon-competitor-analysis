@@ -1,0 +1,20 @@
+# Secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.python-version
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Claude
+.claude/

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "tBTC",
+    "timestamp": 1727090507,
+    "ltv": 73.0,
+    "liq_threshold": 78.0
+  },
+  {
+    "name": "wBTC",
+    "timestamp": 1733166107,
+    "ltv": 73.0,
+    "liq_threshold": 78.0
+  },
+  {
+    "name": "LBTC",
+    "timestamp": 1737810995,
+    "ltv": 70.0,
+    "liq_threshold": 75.0
+  },
+  {
+    "name": "LBTC",
+    "timestamp": 1748273879,
+    "ltv": 0.0,
+    "liq_threshold": 72.0
+  },
+  {
+    "name": "cbBTC",
+    "timestamp": 1727092499,
+    "ltv": 73.0,
+    "liq_threshold": 78.0
+  },
+  {
+    "name": "cbBTC",
+    "timestamp": 1741687811,
+    "ltv": 73.0,
+    "liq_threshold": 78.0
+  }
+]

@@ -1,0 +1,130 @@
+[
+  {
+    "token": "tBTC",
+    "protocol": "Aave V3",
+    "max_ltv": 73.0,
+    "liq_threshold": 78.0,
+    "borrowing_enabled": true,
+    "note": ""
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Aave V3",
+    "max_ltv": 73.0,
+    "liq_threshold": 78.0,
+    "borrowing_enabled": true,
+    "note": ""
+  },
+  {
+    "token": "LBTC",
+    "protocol": "Aave V3",
+    "max_ltv": 70.0,
+    "liq_threshold": 75.0,
+    "borrowing_enabled": false,
+    "note": ""
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Aave V3",
+    "max_ltv": 73.0,
+    "liq_threshold": 78.0,
+    "borrowing_enabled": true,
+    "note": ""
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDC, TVL $432M"
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDC, TVL $254M"
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDT, TVL $164M"
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDT, TVL $13M"
+  },
+  {
+    "token": "LBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDC, TVL $4M"
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Spark Lend",
+    "max_ltv": 0.0,
+    "liq_threshold": 35.0,
+    "borrowing_enabled": false,
+    "note": ""
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Spark Lend",
+    "max_ltv": 81.0,
+    "liq_threshold": 82.0,
+    "borrowing_enabled": true,
+    "note": ""
+  },
+  {
+    "token": "LBTC",
+    "protocol": "Spark Lend",
+    "max_ltv": 74.0,
+    "liq_threshold": 75.0,
+    "borrowing_enabled": false,
+    "note": ""
+  },
+  {
+    "token": "tBTC",
+    "protocol": "Spark Lend",
+    "max_ltv": 74.0,
+    "liq_threshold": 75.0,
+    "borrowing_enabled": true,
+    "note": ""
+  },
+  {
+    "token": "tBTC",
+    "protocol": "Compound V3",
+    "max_ltv": 80.0,
+    "liq_threshold": 85.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDT"
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Compound V3",
+    "max_ltv": 80.0,
+    "liq_threshold": 85.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDT"
+  },
+  {
+    "token": "wBTC",
+    "protocol": "Fluid",
+    "max_ltv": 85.0,
+    "liq_threshold": 90.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDC"
+  }
+]
