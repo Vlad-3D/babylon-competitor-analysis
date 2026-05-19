@@ -1,0 +1,31 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#F7931A'
+    primaryTextColor: '#222'
+    primaryBorderColor: '#D17A00'
+    lineColor: '#666'
+    secondaryColor: '#FFE4B5'
+    tertiaryColor: '#FFF8E7'
+    fontFamily: 'Inter, system-ui, sans-serif'
+    fontSize: '15px'
+---
+flowchart TD
+    A["Borrower pays interest<br/>on Aave V4"] --> B["Babylon 10% fee<br/>to Treasury"]
+    B --> C["Treasury buys BABY<br/>from open market"]
+    C --> D["BABY distributed to active<br/>borrowers with vesting"]
+    D --> E{"Borrower<br/>status"}
+    E -->|stays active| F["Receives full BABY<br/>as vesting unlocks"]
+    E -->|exits early| G["Keeps only the<br/>unlocked portion"]
+    G --> H["Locked portion returns<br/>to redistribution pool"]
+    H --> D
+
+    style A fill:#E8F4FD,stroke:#2775CA,color:#222
+    style B fill:#FFE4B5,stroke:#D17A00,color:#222
+    style C fill:#FFD699,stroke:#D17A00,color:#222
+    style D fill:#FFC966,stroke:#D17A00,color:#222
+    style E fill:#F0F0F0,stroke:#888,color:#222
+    style F fill:#D4EDDA,stroke:#28A745,color:#222
+    style G fill:#FFE5B4,stroke:#FD7E14,color:#222
+    style H fill:#FFC966,stroke:#D17A00,color:#222

@@ -1,36 +1,36 @@
 [
   {
     "name":"wBTC",
-    "defi_integrations_count":123,
-    "total_pool_tvl":5443806615,
+    "defi_integrations_count":121,
+    "total_pool_tvl":4897804881,
     "top_integrations":[
       "aave-v3",
       "compound-v3",
+      "morpho-blue",
       "uniswap-v3",
-      "morpho-v1",
       "solv-basis-trading"
     ],
-    "chain_count":41,
-    "active_pool_count":557
+    "chain_count":37,
+    "active_pool_count":532
   },
   {
     "name":"cbBTC",
-    "defi_integrations_count":54,
-    "total_pool_tvl":5580366278,
+    "defi_integrations_count":56,
+    "total_pool_tvl":5082533524,
     "top_integrations":[
-      "morpho-v1",
+      "morpho-blue",
       "aave-v3",
       "curve-dex",
-      "kamino-lend",
-      "uniswap-v3"
+      "sparklend",
+      "kamino-lend"
     ],
-    "chain_count":6,
-    "active_pool_count":249
+    "chain_count":5,
+    "active_pool_count":263
   },
   {
     "name":"tBTC",
-    "defi_integrations_count":29,
-    "total_pool_tvl":339092434,
+    "defi_integrations_count":30,
+    "total_pool_tvl":278275210,
     "top_integrations":[
       "aave-v3",
       "curve-dex",
@@ -38,55 +38,53 @@
       "uniswap-v3",
       "convex-finance"
     ],
-    "chain_count":9,
-    "active_pool_count":95
+    "chain_count":8,
+    "active_pool_count":90
   },
   {
     "name":"LBTC",
-    "defi_integrations_count":24,
-    "total_pool_tvl":1301486132,
+    "defi_integrations_count":23,
+    "total_pool_tvl":1258827268,
     "top_integrations":[
       "lombard-lbtc",
       "sparklend",
       "aave-v3",
-      "morpho-v1",
+      "morpho-blue",
       "jupiter-lend"
     ],
-    "chain_count":11,
-    "active_pool_count":51
+    "chain_count":10,
+    "active_pool_count":46
   },
   {
     "name":"SolvBTC",
     "defi_integrations_count":14,
-    "total_pool_tvl":191609842,
+    "total_pool_tvl":197120147,
     "top_integrations":[
       "venus-core-pool",
       "uniswap-v3",
-      "morpho-v1",
-      "ekubo",
-      "folks-finance-xchain"
+      "tydro",
+      "morpho-blue",
+      "ekubo"
     ],
-    "chain_count":10,
-    "active_pool_count":16
+    "chain_count":9,
+    "active_pool_count":17
   },
   {
     "name":"pumpBTC",
-    "defi_integrations_count":2,
-    "total_pool_tvl":1398708,
+    "defi_integrations_count":1,
+    "total_pool_tvl":1136372,
     "top_integrations":[
-      "curve-dex",
-      "morpho-v1"
+      "curve-dex"
     ],
     "chain_count":1,
-    "active_pool_count":2
+    "active_pool_count":1
   },
   {
     "name":"sBTC",
-    "defi_integrations_count":3,
-    "total_pool_tvl":52745849,
+    "defi_integrations_count":2,
+    "total_pool_tvl":55829683,
     "top_integrations":[
       "zest-v2",
-      "echelon-market",
       "curve-dex"
     ],
     "chain_count":3,
@@ -94,28 +92,28 @@
   },
   {
     "name":"uniBTC",
-    "defi_integrations_count":7,
-    "total_pool_tvl":75528987,
+    "defi_integrations_count":5,
+    "total_pool_tvl":34947318,
     "top_integrations":[
-      "pendle",
       "berapaw",
-      "curve-dex",
-      "uniswap-v4",
-      "morpho-v1"
+      "pendle",
+      "uniswap-v3",
+      "morpho-blue",
+      "curve-dex"
     ],
-    "chain_count":5,
-    "active_pool_count":14
+    "chain_count":4,
+    "active_pool_count":10
   },
   {
     "name":"eBTC",
-    "defi_integrations_count":8,
-    "total_pool_tvl":125054377,
+    "defi_integrations_count":9,
+    "total_pool_tvl":119618910,
     "top_integrations":[
       "ether.fi-stake",
+      "curvance",
       "aave-v3",
       "fluid-dex",
-      "curve-dex",
-      "convex-finance"
+      "curve-dex"
     ],
     "chain_count":3,
     "active_pool_count":10
@@ -123,16 +121,16 @@
   {
     "name":"FBTC",
     "defi_integrations_count":5,
-    "total_pool_tvl":56518948,
+    "total_pool_tvl":31089900,
     "top_integrations":[
-      "aave-v3",
       "kamino-lend",
+      "aave-v3",
       "uniswap-v3",
-      "ekubo",
+      "orca-dex",
       "lendle-pooled-markets"
     ],
-    "chain_count":4,
-    "active_pool_count":5
+    "chain_count":3,
+    "active_pool_count":6
   },
   {
     "name":"coreBTC",
@@ -147,7 +145,7 @@
   {
     "name":"Lorenzo stBTC",
     "defi_integrations_count":3,
-    "total_pool_tvl":18724573,
+    "total_pool_tvl":19805898,
     "top_integrations":[
       "dolomite",
       "uniswap-v3",

@@ -502,9 +502,207 @@ st.caption(
 st.divider()
 
 # =====================================================================
-# 4. DeFi Integrations
+# 3b. Cross-Protocol Summary — Averages, Reserve Factor, Liquidity
 # =====================================================================
-st.header("4. DeFi Integrations")
+st.header("4. Cross-Protocol Summary (USDC / USDT)")
+st.caption(
+    "Side-by-side comparison of borrow rate averages, reserve factor, and current pool liquidity "
+    "across Aave V3, Morpho Blue, Spark Lend and Compound V3."
+)
+
+
+@st.cache_data(ttl=300)
+def _load_rate_csv(name: str, rename_borrow: bool = False) -> pd.DataFrame:
+    p = _rates_data_dir / name
+    if not p.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(p, parse_dates=["date"])
+    if rename_borrow and "borrow_rate" in df.columns:
+        df = df.rename(columns={"borrow_rate": "borrow_apy"})
+    return df
+
+
+_aave_r = _load_rate_csv("aave_rates.csv")
+_morpho_r = _load_rate_csv("morpho_btc_borrow.csv")
+_spark_r = _load_rate_csv("spark_stable.csv", rename_borrow=True)
+_compound_r = _load_rate_csv("compound_btc_borrow.csv")
+
+_now_ts = pd.Timestamp.now()
+_cutoff_1y = _now_ts - pd.Timedelta(days=365)
+_cutoff_2y = _now_ts - pd.Timedelta(days=730)
+
+
+def _compute_averages(df_in: pd.DataFrame, label: str) -> list[dict]:
+    """Now = last row in CSV (today's snapshot, written by the fetcher).
+    Averages computed from the historical weekly entries; physically impossible
+    snapshots (utilization > 100%) are filtered out as bad-sample noise.
+    """
+    out = []
+    if df_in.empty or "borrow_apy" not in df_in.columns:
+        return out
+    for sym in ["USDC", "USDT"]:
+        sub = df_in[df_in["symbol"] == sym].copy()
+        if sub.empty:
+            continue
+        if "utilization" in sub.columns:
+            sub = sub[sub["utilization"].fillna(0) <= 100]
+        if sub.empty:
+            continue
+        sub = sub.sort_values("date")
+        out.append({
+            "Protocol": label,
+            "Asset": sym,
+            "Now %": float(sub.iloc[-1]["borrow_apy"]),
+            "1Y avg %": float(sub[sub["date"] >= _cutoff_1y]["borrow_apy"].mean()),
+            "2Y avg %": float(sub[sub["date"] >= _cutoff_2y]["borrow_apy"].mean()),
+            "All-time avg %": float(sub["borrow_apy"].mean()),
+        })
+    return out
+
+
+_avg_rows = []
+_avg_rows += _compute_averages(_aave_r, "Aave V3")
+_avg_rows += _compute_averages(_morpho_r, "Morpho Blue")
+_avg_rows += _compute_averages(_spark_r, "Spark Lend")
+_avg_rows += _compute_averages(_compound_r, "Compound V3")
+
+_tab_avg, _tab_rf, _tab_liq = st.tabs(["📊 Borrow Rate Averages", "🏦 Reserve Factor", "💧 Current Liquidity"])
+
+with _tab_avg:
+    if _avg_rows:
+        _avg_df = pd.DataFrame(_avg_rows)
+        st.dataframe(
+            _avg_df.style.format({
+                "Now %": "{:.2f}%",
+                "1Y avg %": "{:.2f}%",
+                "2Y avg %": "{:.2f}%",
+                "All-time avg %": "{:.2f}%",
+            }).background_gradient(subset=["1Y avg %", "2Y avg %", "All-time avg %"], cmap="RdYlGn_r"),
+            use_container_width=True, hide_index=True,
+        )
+        st.caption(
+            "**1Y / 2Y / All-time** averages of variable borrow APY computed from weekly snapshots. "
+            "Lower = cheaper borrowing on average."
+        )
+    else:
+        st.info("No rate data available.")
+
+with _tab_rf:
+    _rf_path = _rates_data_dir / "reserve_factor.csv"
+    if _rf_path.exists():
+        _rf_df = pd.read_csv(_rf_path, parse_dates=["date"])
+
+        # Aave/Morpho/Spark RF is a governance parameter (step function — use latest).
+        # Compound V3 implicit RF varies week to week with utilization — use the
+        # trailing-1Y median so the bar is comparable to Aave's fixed setting.
+        _now_ts = pd.Timestamp.now()
+        _cutoff_1y = _now_ts - pd.Timedelta(days=365)
+
+        _agg_rows = []
+        for (_proto, _sym), _grp in _rf_df.groupby(["protocol", "symbol"]):
+            if _proto == "Compound V3":
+                _val = _grp[_grp["date"] >= _cutoff_1y]["reserve_factor"].median()
+                if pd.isna(_val):
+                    _val = _grp["reserve_factor"].median()
+            else:
+                _val = _grp.sort_values("date").iloc[-1]["reserve_factor"]
+            _agg_rows.append({"protocol": _proto, "symbol": _sym, "reserve_factor": _val})
+
+        _rf_now = pd.DataFrame(_agg_rows)
+        _pivot = _rf_now.pivot(index="protocol", columns="symbol", values="reserve_factor")
+        _pivot = _pivot.reindex(["Aave V3", "Morpho Blue", "Spark Lend", "Compound V3"])
+
+        _fig_rf = go.Figure()
+        for _sym, _color in [("USDC", "#2775CA"), ("USDT", "#26A17B")]:
+            if _sym not in _pivot.columns:
+                continue
+            _labels = [
+                f"{v:.1f}%{'*' if proto == 'Compound V3' else ''}" if pd.notna(v) else ""
+                for proto, v in zip(_pivot.index, _pivot[_sym])
+            ]
+            _fig_rf.add_trace(go.Bar(
+                x=_pivot.index, y=_pivot[_sym], name=_sym,
+                marker_color=_color,
+                text=_labels,
+                textposition="outside",
+            ))
+        _fig_rf.update_layout(
+            barmode="group",
+            height=380,
+            yaxis=dict(title="Reserve Factor %", gridcolor="rgba(0,0,0,0.06)"),
+            margin=dict(l=10, r=10, t=10, b=10),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+            plot_bgcolor="rgba(0,0,0,0)",
+        )
+        st.plotly_chart(_fig_rf, use_container_width=True)
+        st.caption(
+            "Reserve factor per protocol. "
+            "**Aave V3** — last `ReserveFactorChanged` event on PoolConfigurator (Etherscan). "
+            "**Spark Lend** — current value from Messari subgraph (Spark routes param changes "
+            "via Maker spells, not standard events). "
+            "**Morpho Blue** — last `SetFee` event per BTC-collateral market (0% — never changed). "
+            "**Compound V3** \\* — *implicit* RF (1Y median): Comet has no explicit reserveFactor "
+            "parameter, so we derive `1 − supplyApr / (borrowApr × utilization)` from weekly "
+            "subgraph snapshots. Varies with utilization — see the Compound page for the time series."
+        )
+    else:
+        st.info("Run `collect_data.py` to populate reserve_factor.csv.")
+
+with _tab_liq:
+    _liq_path = _rates_data_dir / "liquidity_stablecoin.csv"
+    _btc_liq_path = _rates_data_dir / "liquidity_btc_collateral.csv"
+    if _liq_path.exists():
+        _liq_df = pd.read_csv(_liq_path)
+        _liq_df = _liq_df.sort_values(["protocol", "symbol", "market_label"])
+        # Select & rename only the columns we want to show — CSV may have extra columns
+        _cols_map = {
+            "protocol": "Protocol",
+            "market_label": "Market",
+            "symbol": "Asset",
+            "borrow_apy": "Borrow APY %",
+            "supply_usd": "Supplied $",
+            "borrow_usd": "Borrowed $",
+            "available_usd": "Available $",
+            "utilization": "Utilization %",
+        }
+        _present = [c for c in _cols_map if c in _liq_df.columns]
+        _show = _liq_df[_present].rename(columns=_cols_map)
+        st.markdown("**Stablecoin pool liquidity (USDC / USDT)**")
+        st.dataframe(
+            _show.style.format({
+                "Borrow APY %": "{:.2f}%",
+                "Supplied $": "${:,.0f}",
+                "Borrowed $": "${:,.0f}",
+                "Available $": "${:,.0f}",
+                "Utilization %": "{:.1f}%",
+            }).background_gradient(subset=["Utilization %"], cmap="RdYlGn_r"),
+            use_container_width=True, hide_index=True,
+        )
+
+        if _btc_liq_path.exists():
+            _btc_liq = pd.read_csv(_btc_liq_path)
+            # Pivot to wide: rows=protocol, cols=BTC type, values=USD
+            _btc_pivot = _btc_liq.pivot(index="protocol", columns="btc_symbol", values="supplied_usd").fillna(0)
+            _btc_pivot = _btc_pivot.reindex(["Aave V3", "Morpho Blue", "Spark Lend", "Compound V3"])
+            # Order columns
+            _btc_cols = [c for c in ["WBTC", "cbBTC", "LBTC", "tBTC"] if c in _btc_pivot.columns]
+            _btc_pivot = _btc_pivot[_btc_cols]
+            _btc_pivot["Total"] = _btc_pivot.sum(axis=1)
+
+            st.markdown("**BTC collateral in each protocol (USD)**")
+            st.dataframe(
+                _btc_pivot.style.format("${:,.0f}").background_gradient(cmap="Oranges", axis=None),
+                use_container_width=True,
+            )
+    else:
+        st.info("Run `collect_data.py` to populate liquidity_stablecoin.csv.")
+
+st.divider()
+
+# =====================================================================
+# 5. DeFi Integrations
+# =====================================================================
+st.header("5. DeFi Integrations")
 
 st.caption(
     "**Methodology:** Exact token-level matching across DeFi Llama Yields API pools. "
@@ -613,7 +811,7 @@ st.divider()
 # =====================================================================
 # 5. Competitive Radar
 # =====================================================================
-st.header("5. Competitive Radar")
+st.header("6. Competitive Radar")
 
 radar_names = ["Babylon TBV"] + FOCUS_COMPETITORS
 radar_df = df[df["name"].isin(radar_names)].copy()

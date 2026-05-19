@@ -23,6 +23,8 @@ from src.fetch_ltv_comparison import fetch_ltv_comparison_safe
 from src.fetch_morpho_btc_borrow import fetch_morpho_btc_borrow_safe
 from src.fetch_maple_btc_borrow import fetch_maple_btc_borrow_safe
 from src.fetch_compound_btc_borrow import fetch_compound_btc_borrow_safe
+from src.fetch_reserve_factor import fetch_reserve_factor_safe
+from src.fetch_liquidity_snapshot import fetch_liquidity_snapshot_safe
 
 DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
@@ -197,6 +199,36 @@ def main():
             with open(DATA_DIR / "ltv_comparison.json", "w") as f:
                 _json.dump(ltv_data, f, indent=2)
             print(f"  Saved {len(ltv_data)} entries to data/ltv_comparison.json")
+
+    # 15. Reserve Factor (monthly, since inception)
+    print("\n[15/16] Reserve Factor history (Aave/Spark/Morpho/Compound)...")
+    api_key = os.environ.get("THEGRAPH_API_KEY")
+    if not api_key:
+        print("  SKIPPED: THEGRAPH_API_KEY not set")
+    else:
+        rf_df = fetch_reserve_factor_safe()
+        if rf_df.empty:
+            print("  WARNING: No reserve factor data returned")
+        else:
+            rf_df.to_csv(DATA_DIR / "reserve_factor.csv", index=False)
+            print(f"  Saved {len(rf_df)} monthly points to data/reserve_factor.csv")
+
+    # 16. Liquidity Snapshot — current utilization, available liquidity, BTC collateral
+    print("\n[16/16] Liquidity Snapshot (USDC/USDT pools + BTC collateral)...")
+    api_key = os.environ.get("THEGRAPH_API_KEY")
+    if not api_key:
+        print("  SKIPPED: THEGRAPH_API_KEY not set")
+    else:
+        stable_df, btc_df = fetch_liquidity_snapshot_safe()
+        if stable_df.empty and btc_df.empty:
+            print("  WARNING: No liquidity snapshot data returned")
+        else:
+            if not stable_df.empty:
+                stable_df.to_csv(DATA_DIR / "liquidity_stablecoin.csv", index=False)
+                print(f"  Saved {len(stable_df)} stablecoin pool rows to data/liquidity_stablecoin.csv")
+            if not btc_df.empty:
+                btc_df.to_csv(DATA_DIR / "liquidity_btc_collateral.csv", index=False)
+                print(f"  Saved {len(btc_df)} BTC collateral rows to data/liquidity_btc_collateral.csv")
 
     # Summary
     print("\n" + "=" * 60)

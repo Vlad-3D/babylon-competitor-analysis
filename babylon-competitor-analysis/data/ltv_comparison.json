@@ -37,7 +37,7 @@
     "max_ltv": 86.0,
     "liq_threshold": 86.0,
     "borrowing_enabled": true,
-    "note": "Borrow USDC, TVL $432M"
+    "note": "Borrow USDC, TVL $269M"
   },
   {
     "token": "wBTC",
@@ -45,7 +45,7 @@
     "max_ltv": 86.0,
     "liq_threshold": 86.0,
     "borrowing_enabled": true,
-    "note": "Borrow USDC, TVL $254M"
+    "note": "Borrow USDC, TVL $433M"
   },
   {
     "token": "wBTC",
@@ -53,15 +53,7 @@
     "max_ltv": 86.0,
     "liq_threshold": 86.0,
     "borrowing_enabled": true,
-    "note": "Borrow USDT, TVL $164M"
-  },
-  {
-    "token": "cbBTC",
-    "protocol": "Morpho Blue",
-    "max_ltv": 86.0,
-    "liq_threshold": 86.0,
-    "borrowing_enabled": true,
-    "note": "Borrow USDT, TVL $13M"
+    "note": "Borrow USDT, TVL $177M"
   },
   {
     "token": "LBTC",
@@ -69,13 +61,29 @@
     "max_ltv": 86.0,
     "liq_threshold": 86.0,
     "borrowing_enabled": true,
-    "note": "Borrow USDC, TVL $4M"
+    "note": "Borrow PYUSD, TVL $34M"
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow PYUSD, TVL $20M"
+  },
+  {
+    "token": "cbBTC",
+    "protocol": "Morpho Blue",
+    "max_ltv": 86.0,
+    "liq_threshold": 86.0,
+    "borrowing_enabled": true,
+    "note": "Borrow USDT, TVL $10M"
   },
   {
     "token": "wBTC",
     "protocol": "Spark Lend",
-    "max_ltv": 0.0,
-    "liq_threshold": 35.0,
+    "max_ltv": 77.0,
+    "liq_threshold": 78.0,
     "borrowing_enabled": false,
     "note": ""
   },
